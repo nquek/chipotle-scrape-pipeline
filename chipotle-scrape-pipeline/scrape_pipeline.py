@@ -7,6 +7,8 @@ import requests
 
 load_dotenv()
 api_key = os.getenv("FIRECRAWL_API_KEY")
+if not api_key:
+    raise RuntimeError("FIRECRAWL_API_KEY is not set")
 
 # --- Step 01: Search + scrape with Firecrawl ---
 
@@ -20,8 +22,6 @@ response = requests.post(
     },
 )
 
-print("Response status:", response.status_code)
-print("Response body:", response.text[:500])
 results = response.json()["web"]
 print(f"Firecrawl returned {len(results)} results")
 
