@@ -22,10 +22,9 @@ response = requests.post(
     },
 )
 
-results = response.json()["data"]
-print(f"Firecrawl returned {len(results)} results")
-print("First result type:", type(results[0]))
-print("First result:", str(results[0])[:300])
+data = response.json()["data"]
+print("data type:", type(data))
+print("data keys/preview:", str(data)[:500])
 
 # --- Step 02: Save each result as a markdown file ---
 
