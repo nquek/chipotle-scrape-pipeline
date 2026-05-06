@@ -28,6 +28,8 @@ print(f"Firecrawl returned {len(results)} results")
 output_dir = Path("knowledge/raw")
 output_dir.mkdir(parents=True, exist_ok=True)
 
+date_prefix = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
 for i, r in enumerate(results, start=1):
     title = r.get("title") or re.sub(r"https?://", "", r.get("url", "unknown"))
     slug = re.sub(r"[^a-zA-Z0-9]+", "-", title).strip("-").lower()[:100]
@@ -40,7 +42,7 @@ for i, r in enumerate(results, start=1):
         f"---\n\n"
         + body
     )
-    path = output_dir / f"{i:02d}-{slug}.md"
+    path = output_dir / f"{date_prefix}-{i:02d}-{slug}.md"
     path.write_text(content)
     print(f"  - {title}")
     print(f"    {r.get('url')}")

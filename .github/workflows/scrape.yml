@@ -1,0 +1,37 @@
+name: Chipotle Scrape Pipeline
+
+on:
+  schedule:
+    - cron: '0 8 * * 1'  # Every Monday at 8 AM UTC
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r chipotle-scrape-pipeline/requirements.txt
+
+      - name: Run scrape pipeline
+        working-directory: chipotle-scrape-pipeline
+        env:
+          FIRECRAWL_API_KEY: ${{ secrets.FIRECRAWL_API_KEY }}
+        run: python scrape_pipeline.py
+
+      - name: Commit and push new files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add chipotle-scrape-pipeline/knowledge/raw/
+          git diff --staged --quiet && echo "No new files, skipping commit." || \
+            git commit -m "chore: automated scrape $(date -u +%Y-%m-%d)" && git push
