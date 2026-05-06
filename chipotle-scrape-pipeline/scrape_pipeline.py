@@ -22,6 +22,7 @@ response = requests.post(
     },
 )
 
+print("Status:", response.status_code, "| Keys:", list(response.json().keys()))
 results = response.json()["web"]
 print(f"Firecrawl returned {len(results)} results")
 
