@@ -20,7 +20,7 @@ response = requests.post(
     },
 )
 
-results = response.json()["data"]["web"]
+results = response.json()["web"]
 print(f"Firecrawl returned {len(results)} results")
 
 # --- Step 02: Save each result as a markdown file ---
