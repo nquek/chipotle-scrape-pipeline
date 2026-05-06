@@ -24,6 +24,8 @@ response = requests.post(
 
 results = response.json()["data"]
 print(f"Firecrawl returned {len(results)} results")
+print("First result type:", type(results[0]))
+print("First result:", str(results[0])[:300])
 
 # --- Step 02: Save each result as a markdown file ---
 
